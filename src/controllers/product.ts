@@ -17,16 +17,48 @@ const newProduct = (req: Request, res: Response) => {
             res.status(400).send(err);
         }
         else res.status(201).json({ message: "Produto cadastrado com sucesso" });
-    })
+    });
 }
 
 const findAllProducts = (req: Request, res: Response) => {
     ProdutoSchema.find((err, products) => {
         if(err) {
-            res.status(404).send(err)
+            res.status(404).send(err);
         }
         else res.status(200).send(products);
-    })
+    });
 }
 
-export { working, newProduct, findAllProducts };
+const findProductById = (req: Request, res: Response) => {
+    const productId = req.params.product_id;
+
+    ProdutoSchema.findById(productId, (err, product) => {
+        if(err) {
+            res.status(404).send(err);
+        }
+        else res.status(200).send(product);
+    });
+}
+
+const updateProduct = (req: Request, res: Response) => {
+    const productId = req.params.product_id;
+    const { nome, preco, descricao } = req.body;
+
+    ProdutoSchema.findById(productId, (err, product) => {
+        if(err) {
+            res.status(404).send(err);
+        }
+        if (nome) product.nome = nome;
+        if (preco) product.preco = preco;
+        if (descricao) product.descricao = descricao;
+
+        product.save((err) => {
+            if(err) {
+               res.status(400).send(err);
+            }
+            else res.status(200).send(product);
+        });
+    });
+}
+
+export { working, newProduct, findAllProducts, findProductById, updateProduct };
