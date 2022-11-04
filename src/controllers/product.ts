@@ -61,4 +61,15 @@ const updateProduct = (req: Request, res: Response) => {
     });
 }
 
-export { working, newProduct, findAllProducts, findProductById, updateProduct };
+const deleteProduct = (req: Request, res: Response) => {
+    const productId = req.params.product_id;
+
+    ProdutoSchema.deleteOne({
+        _id: productId
+    }, (err) => {
+        if(err) res.status(400).send(err);
+        else res.status(202).json({ message: "Deleted" });
+    })
+}
+
+export { working, newProduct, findAllProducts, findProductById, updateProduct, deleteProduct };
