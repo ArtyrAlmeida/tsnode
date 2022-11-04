@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import express from "express";
 import mongoose from 'mongoose';
-import bodyParser from "body-parser";
 import router from './routes/routes';
 
 dotenv.config();
@@ -11,8 +10,7 @@ mongoose.connect("mongodb://localhost:27017/Produtos")
 .then(()=>console.log("Connection successsfull"))
 .catch((err)=>console.log(err));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use("/api", router);
 

@@ -14,10 +14,19 @@ const newProduct = (req: Request, res: Response) => {
 
     produto.save((err) => {
         if(err) {
-            res.send(err);
+            res.status(400).send(err);
         }
-        res.json({ message: "Produto cadastrado com sucesso" })
+        else res.status(201).json({ message: "Produto cadastrado com sucesso" });
     })
 }
 
-export { working, newProduct };
+const findAllProducts = (req: Request, res: Response) => {
+    ProdutoSchema.find((err, products) => {
+        if(err) {
+            res.status(404).send(err)
+        }
+        else res.status(200).send(products);
+    })
+}
+
+export { working, newProduct, findAllProducts };
